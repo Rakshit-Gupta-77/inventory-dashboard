@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { api } from "@/lib/api";
+import { toast } from "sonner";
 import {
   LayoutDashboard,
   Package,
@@ -67,6 +69,12 @@ export function AppSidebar() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    api.auth.logout();
+    toast.success("Logged out successfully");
+    navigate("/login");
+  };
+
   const renderGroup = (title: string, items: typeof navItems) => (
     <div className="space-y-1">
       {!collapsed && <p className="label-upper px-3 mb-2">{title}</p>}
@@ -115,16 +123,16 @@ export function AppSidebar() {
         <SidebarItem
           icon={User}
           label="Profile"
-          active={false}
+          active={location.pathname === "/profile"}
           collapsed={collapsed}
-          onClick={() => {}}
+          onClick={() => navigate("/profile")}
         />
         <SidebarItem
           icon={LogOut}
           label="Logout"
           active={false}
           collapsed={collapsed}
-          onClick={() => {}}
+          onClick={handleLogout}
         />
         <button
           onClick={() => setCollapsed(!collapsed)}
