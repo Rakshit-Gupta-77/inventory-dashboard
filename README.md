@@ -1,73 +1,124 @@
-# Welcome to your Lovable project
+# CoreInventory – Inventory Management System Dashboard
 
-## Project info
+This project is developed for **Odoo x Indus University Hackathon 2026**.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+CoreInventory is a modular Inventory Management System (IMS) that digitizes and simplifies stock operations inside a business.
+It replaces manual registers and Excel sheets with a modern real-time dashboard.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🚀 Features
 
-**Use Lovable**
+* 📊 Dashboard with KPIs
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+  * Total Products
+  * Low Stock Items
+  * Pending Receipts
+  * Pending Deliveries
+  * Transfers Today
 
-Changes made via Lovable will be committed automatically to this repo.
+* 📦 Product Management
 
-**Use your preferred IDE**
+  * Add / update products
+  * SKU support
+  * Category & location tracking
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+* 📥 Receipts (Incoming Stock)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+  * Add new stock from vendor
+  * Automatic stock update
 
-Follow these steps:
+* 📤 Delivery Orders (Outgoing Stock)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+  * Reduce stock on delivery
+  * Track delivery history
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+* 🔄 Internal Transfers
 
-# Step 3: Install the necessary dependencies.
-npm i
+  * Move stock between locations
+  * Track movement history
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+* 🏭 Warehouse & Locations
+
+  * Multiple warehouse support
+  * Location based stock
+
+* ⚠ Low Stock Alerts
+
+  * Warning when quantity is low
+  * Helps prevent stock shortage
+
+* 📜 Move History Log
+
+  * Every operation recorded
+  * Easy tracking of changes
+
+---
+
+## 🧠 Extra Features Added
+
+* Smart dashboard UI
+* Real-time counters (frontend state)
+* Modern admin panel design
+* Responsive layout
+* Dark theme UI
+
+---
+
+## 🛠 Tech Stack
+
+* React
+* Vite
+* Tailwind CSS
+* Shadcn UI
+* JavaScript
+
+AI tools used:
+
+* ChatGPT (logic & code help)
+* Lovable (UI scaffolding)
+
+All logic, flow, and customization were implemented manually.
+
+---
+
+## ▶ How to Run
+
+```bash
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Open in browser:
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```
+http://localhost:5173
+```
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📁 Project Structure
 
-## What technologies are used for this project?
+```
+src/
+components/
+pages/
+public/
+index.html
+package.json
+```
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🎯 Hackathon Goal
 
-## How can I deploy this project?
+Build a clean, modular, and user-friendly Inventory Management System
+that supports stock tracking, receipts, delivery, transfers,
+and dashboard analytics in real time.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+## 👨‍💻 Author
 
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Rakshit Gupta
+Odoo x Indus Hackathon Participant
