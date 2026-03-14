@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 import {
@@ -16,7 +16,10 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
+  Menu,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/" },
@@ -46,20 +49,29 @@ interface SidebarItemProps {
 const SidebarItem = ({ icon: Icon, label, active, collapsed, onClick }: SidebarItemProps) => (
   <button
     onClick={onClick}
-    className={`w-full flex items-center gap-3 px-3 py-2 rounded-md transition-all duration-150 group relative ${
+    className={cn(
+      "w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 group relative mb-1",
       active
-        ? "bg-secondary text-foreground shadow-[inset_0_1px_0_0_rgba(255,255,255,0.05)]"
-        : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-    }`}
+        ? "bg-primary text-primary-foreground shadow-md shadow-primary/20 erp-active-item"
+        : "text-muted-foreground hover:text-foreground hover:bg-secondary/80"
+    )}
   >
-    <Icon size={18} className={active ? "text-primary" : "group-hover:text-foreground"} />
-    {!collapsed && <span className="text-sm font-medium tracking-tight">{label}</span>}
-    {active && (
+    <Icon size={18} className={cn("shrink-0 transition-transform duration-200", !active && "group-hover:scale-110")} />
+    {!collapsed && (
+      <span className="text-sm font-semibold tracking-tight whitespace-nowrap overflow-hidden">
+        {label}
+      </span>
+    )}
+    {active && !collapsed && (
       <motion.div
-        layoutId="sidebar-active"
-        className="absolute right-2 w-1 h-4 bg-primary rounded-full"
-        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+        layoutId="sidebar-active-indicator"
+        className="absolute right-2 w-1 h-4 bg-primary-foreground/40 rounded-full"
       />
+    )}
+    {collapsed && (
+      <div className="absolute left-full ml-2 px-2 py-1 bg-popover text-popover-foreground text-xs rounded shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity z-50 whitespace-nowrap">
+        {label}
+      </div>
     )}
   </button>
 );
@@ -76,8 +88,13 @@ export function AppSidebar() {
   };
 
   const renderGroup = (title: string, items: typeof navItems) => (
-    <div className="space-y-1">
-      {!collapsed && <p className="label-upper px-3 mb-2">{title}</p>}
+    <div className="space-y-1 mb-6">
+      {!collapsed && (
+        <p className="label-upper px-3 mb-3 flex items-center gap-2">
+          <span className="w-1 h-1 bg-primary rounded-full" />
+          {title}
+        </p>
+      )}
       {items.map((item) => (
         <SidebarItem
           key={item.path}
@@ -93,33 +110,37 @@ export function AppSidebar() {
 
   return (
     <motion.aside
-      animate={{ width: collapsed ? 64 : 240 }}
+      animate={{ width: collapsed ? 80 : 260 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="h-screen border-r border-border flex flex-col bg-background overflow-hidden shrink-0"
+      className="h-screen border-r border-border/50 flex flex-col bg-card/50 backdrop-blur-xl overflow-hidden shrink-0 z-30 relative"
     >
       {/* Logo */}
-      <div className="h-14 flex items-center gap-2 px-4 border-b border-border shrink-0">
-        <div className="w-7 h-7 bg-primary rounded flex items-center justify-center shrink-0">
-          <Package size={14} className="text-primary-foreground" />
+      <div className={cn(
+        "h-16 flex items-center gap-3 px-4 border-b border-border/50 shrink-0 bg-background/40",
+        collapsed ? "justify-center" : "justify-start"
+      )}>
+        <div className="w-9 h-9 bg-premium-gradient rounded-xl flex items-center justify-center shrink-0 shadow-lg shadow-primary/20 rotate-3 group-hover:rotate-0 transition-transform">
+          <Package size={20} className="text-white" />
         </div>
         {!collapsed && (
-          <span className="font-bold tracking-tighter text-lg">
-            APEX<span className="text-muted-foreground">INV</span>
-          </span>
+          <div className="flex flex-col">
+            <span className="font-black tracking-tighter text-lg leading-none">
+              APEX<span className="text-primary">INV</span>
+            </span>
+            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Enterprise</span>
+          </div>
         )}
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto p-3 space-y-6">
+      <nav className="flex-1 overflow-y-auto overflow-x-hidden p-4 custom-scrollbar">
         {renderGroup("Main", navItems)}
-        <div className="h-px bg-border" />
         {renderGroup("Operations", operationItems)}
-        <div className="h-px bg-border" />
         {renderGroup("Settings", settingItems)}
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-border p-3 space-y-1">
+      <div className="border-t border-border/50 p-4 space-y-2 bg-background/40">
         <SidebarItem
           icon={User}
           label="Profile"
@@ -134,12 +155,18 @@ export function AppSidebar() {
           collapsed={collapsed}
           onClick={handleLogout}
         />
-        <button
+        
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setCollapsed(!collapsed)}
-          className="w-full flex items-center justify-center py-2 text-muted-foreground hover:text-foreground transition-colors"
+          className={cn(
+            "w-full mt-2 hover:bg-secondary flex items-center justify-center h-8",
+            collapsed ? "px-0" : "px-2"
+          )}
         >
-          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-        </button>
+          {collapsed ? <Menu size={18} /> : <ChevronLeft size={18} />}
+        </Button>
       </div>
     </motion.aside>
   );
